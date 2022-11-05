@@ -36,3 +36,24 @@ def create_acct():
         message='account successfully created', 
         status=201
     ), 201
+
+@accounts.route('/<id>', methods=['PUT'])
+def update_acct(id):
+    payload = request.get_json()
+    query = models.Account.update(**payload).where(models.Account.id == id) 
+    query.execute()
+    return jsonify(
+        data = model_to_dict(models.Account.get_by_id(id)), 
+        message="resource updated successfully",
+        status=200
+    ), 200
+
+@accounts.route('/<id>', methods=['DELETE'])
+def delete_acct(id):
+    query = models.Account.delete().where(models.Account.id == id)
+    query.execute()
+    return jsonify(
+        data = id,
+        message = 'successfully deleted account',
+        status = 200
+    ), 200
