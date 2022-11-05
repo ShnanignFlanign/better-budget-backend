@@ -15,7 +15,7 @@ class User(UserMixin, Model):
 class Account(Model):
     name = CharField()
     balance = DecimalField(default=0)
-    user_id = ForeignKeyField(User, backref='Accounts')
+    user_id = ForeignKeyField(User, backref='accounts')
 
     class Meta:
         database = DATABASE
@@ -26,7 +26,7 @@ class Transaction(Model):
     category = CharField()
     description = TextField()
     date = DateTimeField(default=datetime.datetime.now)
-    acct_id = ForeignKeyField(Account, backref='Transactions')
+    acct_id = ForeignKeyField(Account, backref='transactions')
 
     class Meta:
         database = DATABASE

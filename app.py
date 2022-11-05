@@ -2,7 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 
 #import resource files here later
-# from resources.accounts import account
+from resources.accounts import accounts
 # from resources.transactions import transaction
 from resources.users import user
 
@@ -26,8 +26,8 @@ def load_user(userid):
     except models.DoesNotExist:
         return None
 
-# CORS(account, origins=['http://localhost:3000'], supports_credentials=True)
-# app.register_blueprint(account, url_prefix='/portal/accounts')
+CORS(accounts, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(accounts, url_prefix='/portal/accounts')
 
 # CORS(transaction, origins=['http://localhost:3000'], supports_credentials=True)
 # app.register_blueprint(transaction, url_prefix='/portal/accounts/transactions')
