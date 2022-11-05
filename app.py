@@ -3,7 +3,7 @@ from flask_login import LoginManager
 
 #import resource files here later
 from resources.accounts import accounts
-# from resources.transactions import transaction
+from resources.transactions import transactions
 from resources.users import user
 
 import models 
@@ -29,8 +29,8 @@ def load_user(userid):
 CORS(accounts, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(accounts, url_prefix='/portal/accounts')
 
-# CORS(transaction, origins=['http://localhost:3000'], supports_credentials=True)
-# app.register_blueprint(transaction, url_prefix='/portal/accounts/transactions')
+CORS(transactions, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(transactions, url_prefix='/portal/accounts')
 
 CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')

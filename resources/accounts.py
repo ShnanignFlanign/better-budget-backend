@@ -6,7 +6,7 @@ from playhouse.shortcuts import model_to_dict
 accounts = Blueprint('accounts', 'accounts')
 
 @accounts.route('/')
-def dogs_index():
+def accts_index():
     
     result = models.Account.select()
     print('result of select() query', result)
