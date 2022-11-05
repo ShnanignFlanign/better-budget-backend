@@ -25,13 +25,17 @@ class Transaction(Model):
     amount = DecimalField(default=0)
     category = CharField()
     description = TextField()
-    date = datetime(default=datetime.datetime.now)
+    date = DateTimeField(default=datetime.datetime.now)
     acct_id = ForeignKeyField(Account, backref='Transactions')
+
+    class Meta:
+        database = DATABASE
 
 def initialize(): 
     DATABASE.connect()
 
-    DATABASE.create_tables([User, Account], safe=True)
+    ##ADD ACCOUNT AND TRANSACTION TABLES HERE ONCE FIGURED OUT 
+    DATABASE.create_tables([Account, Transaction, User], safe=True)
     print('DB connection confirmed, created necessary tables.')
 
     DATABASE.close()

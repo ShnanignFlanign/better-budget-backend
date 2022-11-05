@@ -2,8 +2,11 @@ from flask import Flask
 from flask_login import LoginManager
 
 #import resource files here later
+# from resources.accounts import account
+# from resources.transactions import transaction
+from resources.users import user
 
-#import models here once set up
+import models 
 
 from flask_cors import CORS 
 
@@ -16,10 +19,26 @@ app.secret_key = "superdupersecret"
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+@login_manager.user_loader
+def load_user(userid):
+    try:
+        return models.User.get(models.User.id == userid)
+    except models.DoesNotExist:
+        return None
+
+# CORS(account, origins=['http://localhost:3000'], supports_credentials=True)
+# app.register_blueprint(account, url_prefix='/portal/accounts')
+
+# CORS(transaction, origins=['http://localhost:3000'], supports_credentials=True)
+# app.register_blueprint(transaction, url_prefix='/portal/accounts/transactions')
+
+CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(user, url_prefix='/user')
+
 @app.route('/')
 def index():
     return 'hi'
 
 if __name__ == '__main__':
-    #models.initialize()
+    models.initialize()
     app.run(debug=DEBUG, port=PORT)
