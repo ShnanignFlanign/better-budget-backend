@@ -37,6 +37,8 @@ def create_acct():
         status=201
     ), 201
 
+#need to add a get one route here for a single account
+
 @accounts.route('/<id>', methods=['PUT'])
 def update_acct(id):
     payload = request.get_json()
