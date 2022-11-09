@@ -9,8 +9,8 @@ transactions = Blueprint('transactions', 'transactions')
 def trans_index(id):
     account = models.Account.get_by_id(id)
     print('result of select() query', account)
-    trans_list = models.Transaction.select().where(models.Transaction.acct_id == account)
-    acct_trans_dicts = [model_to_dict(account) for account in trans_list]
+    trans_list = account.transactions
+    acct_trans_dicts = [model_to_dict(trans) for trans in trans_list]
 
     for trans_dicts in acct_trans_dicts:
         trans_dicts.pop('acct_id')

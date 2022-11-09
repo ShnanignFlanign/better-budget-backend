@@ -43,26 +43,22 @@ def acct_hist(id):
     account = models.Account.get_by_id(id)
     print('result of select() query', account)
 
-    trans_list = models.Transaction.select().where(models.Transaction.acct_id == account)
-    acct_trans_dicts = [model_to_dict(account) for account in trans_list]
-
-    # for trans_dicts in acct_trans_dicts:
-    #     trans_dicts.pop('acct_id')
+    trans_list = account.transactions
+    acct_trans_dicts = [model_to_dict(trans) for trans in trans_list] 
     
-    deps_list = models.Deposit.select().where(models.Deposit.acct_id == account)
-    acct_deps_dicts = [model_to_dict(account) for account in deps_list]
-
-    # for deps_dicts in acct_deps_dicts:
-    #     deps_dicts.pop('acct_id')
+    deps_list = account.deposits
+    acct_deps_dicts = [model_to_dict(dep) for dep in deps_list]
 
     total_dicts = acct_trans_dicts + acct_deps_dicts
 
     for dicts in total_dicts:
         dicts.pop('acct_id')
+    
+    sorted_total = sorted(total_dicts, key=lambda d: d['date'])
 
     return jsonify({
-        'data': total_dicts,
-        'msg': f"found {len(total_dicts)} account details.",
+        'data': sorted_total,
+        'msg': f"found {len(sorted_total)} account details.",
         'status': 200
     }), 200
 
