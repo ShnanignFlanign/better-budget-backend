@@ -45,13 +45,14 @@ def edit_transaction(aid, id):
     payload = request.get_json()
     account = models.Account.get_by_id(aid)
     deposit = models.Deposit.get_by_id(id)
-    
+
     new_balance = account.balance - (deposit.amount - payload['amount'])
     acct_update = account.update(balance=new_balance)
     query = deposit.update(**payload)
     acct_update.execute()
     query.execute()
-    edited_dep = model_to_dict(models.Deposit.get_by_id(id))
+
+    edited_dep = model_to_dict(deposit)
     edited_dep.pop('acct_id')
     return jsonify(
         data = edited_dep,
