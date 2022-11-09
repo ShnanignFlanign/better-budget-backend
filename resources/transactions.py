@@ -29,7 +29,7 @@ def create_transaction(id):
     trans_dict['acct_id'].pop('user_id')
     return jsonify(
         data=trans_dict,
-        message='account successfully created', 
+        message='transaction successfully created', 
         status=201
     ), 201
 
@@ -52,6 +52,6 @@ def delete_transaction(aid, id):
     query.execute()
     return jsonify(
         data = id,
-        message = "updated transaction successfully",
+        message = "Successfully deleted transaction",
         status = 200
     ), 200

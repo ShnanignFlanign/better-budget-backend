@@ -31,11 +31,20 @@ class Transaction(Model):
     class Meta:
         database = DATABASE
 
+class Deposit(Model):
+    name = CharField()
+    amount = DecimalField(default=0)
+    date = DateTimeField(default=datetime.datetime.now)
+    acct_id = ForeignKeyField(Account, backref='deposits')
+
+    class Meta:
+        database = DATABASE
+
 def initialize(): 
     DATABASE.connect()
 
     ##ADD ACCOUNT AND TRANSACTION TABLES HERE ONCE FIGURED OUT 
-    DATABASE.create_tables([Account, Transaction, User], safe=True)
+    DATABASE.create_tables([Account, Deposit, Transaction, User], safe=True)
     print('DB connection confirmed, created necessary tables.')
 
     DATABASE.close()

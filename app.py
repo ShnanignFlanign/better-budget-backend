@@ -4,6 +4,7 @@ from flask_login import LoginManager
 #import resource files here later
 from resources.accounts import accounts
 from resources.transactions import transactions
+from resources.deposits import deposits
 from resources.users import user
 
 import models 
@@ -30,6 +31,9 @@ CORS(accounts, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(accounts, url_prefix='/portal/accounts')
 
 CORS(transactions, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(transactions, url_prefix='/portal/accounts')
+
+CORS(deposits, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(transactions, url_prefix='/portal/accounts')
 
 CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
