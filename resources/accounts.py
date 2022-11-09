@@ -39,18 +39,15 @@ def create_acct():
 
 @accounts.route('/<id>/history')
 def acct_hist(id):
-    
     account = models.Account.get_by_id(id)
     print('result of select() query', account)
 
     trans_list = account.transactions
     acct_trans_dicts = [model_to_dict(trans) for trans in trans_list] 
-    
     deps_list = account.deposits
     acct_deps_dicts = [model_to_dict(dep) for dep in deps_list]
 
     total_dicts = acct_trans_dicts + acct_deps_dicts
-
     for dicts in total_dicts:
         dicts.pop('acct_id')
     

@@ -43,7 +43,13 @@ def create_transaction(id):
 @deposits.route('/<aid>/deposits/<id>', methods=['PUT'])
 def edit_transaction(aid, id):
     payload = request.get_json()
-    query = models.Deposit.update(**payload).where(models.Deposit.id == id)
+    account = models.Account.get_by_id(aid)
+    deposit = models.Deposit.get_by_id(id)
+    
+    new_balance = account.balance - (deposit.amount - payload['amount'])
+    acct_update = account.update(balance=new_balance)
+    query = deposit.update(**payload)
+    acct_update.execute()
     query.execute()
     edited_dep = model_to_dict(models.Deposit.get_by_id(id))
     edited_dep.pop('acct_id')

@@ -28,7 +28,7 @@ def create_transaction(id):
 
     account = models.Account.get_by_id(id)
     new_balance = account.balance - payload['amount']
-    update_query = models.Account.update(balance=new_balance).where(models.Account.id == id)
+    update_query = account.update(balance=new_balance)
     update_query.execute()
 
     trans_dict = model_to_dict(new_trans)
@@ -43,7 +43,12 @@ def create_transaction(id):
 @transactions.route('/<aid>/transactions/<id>', methods=['PUT'])
 def edit_transaction(aid, id):
     payload = request.get_json()
-    query = models.Transaction.update(**payload).where(models.Transaction.id == id)
+    account = models.Account.get_by_id(aid)
+    transaction = models.Transaction.get_by_id(id)
+    new_balance = account.balance + (transaction.amount - payload['amount'])
+    acct_update = account.update(balance=new_balance)
+    query = transaction.update(**payload)
+    acct_update.execute()
     query.execute()
     edited_trans = model_to_dict(models.Transaction.get_by_id(id))
     edited_trans.pop('acct_id')
