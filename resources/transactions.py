@@ -21,12 +21,18 @@ def trans_index(id):
         'status': 200
     }), 200
 
-@transactions.route('/<id>/transactions', methods=['POST'])
+@transactions.route('/<id>/transactions', methods=['POST', 'PUT'])
 def create_transaction(id):
     payload = request.get_json()
     new_trans = models.Transaction.create(acct_id=id, name=payload['name'], amount=payload['amount'], category=payload['category'], description=payload['description'])
     trans_dict = model_to_dict(new_trans)
     trans_dict['acct_id'].pop('user_id')
+
+    account = models.Account.get_by_id(id)
+    new_balance = account.balance - payload['amount']
+    update_query = models.Account.update(balance=new_balance).where(models.Account.id == id)
+    update_query.execute()
+    
     return jsonify(
         data=trans_dict,
         message='transaction successfully created', 
