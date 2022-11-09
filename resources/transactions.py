@@ -25,14 +25,15 @@ def trans_index(id):
 def create_transaction(id):
     payload = request.get_json()
     new_trans = models.Transaction.create(acct_id=id, name=payload['name'], amount=payload['amount'], category=payload['category'], description=payload['description'])
-    trans_dict = model_to_dict(new_trans)
-    trans_dict['acct_id'].pop('user_id')
 
     account = models.Account.get_by_id(id)
     new_balance = account.balance - payload['amount']
     update_query = models.Account.update(balance=new_balance).where(models.Account.id == id)
     update_query.execute()
-    
+
+    trans_dict = model_to_dict(new_trans)
+    trans_dict['acct_id'].pop('user_id')
+
     return jsonify(
         data=trans_dict,
         message='transaction successfully created', 
