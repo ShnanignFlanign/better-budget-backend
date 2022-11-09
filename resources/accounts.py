@@ -75,7 +75,12 @@ def update_acct(id):
 
 @accounts.route('/<id>', methods=['DELETE'])
 def delete_acct(id):
+    account = models.Account.get_by_id(id)
+    del_deps = models.Deposit.delete().where(models.Deposit.acct_id == id)
+    del_trans = models.Transaction.delete().where(models.Transaction.acct_id == id)
     query = models.Account.delete().where(models.Account.id == id)
+    del_deps.execute()
+    del_trans.execute()
     query.execute()
     return jsonify(
         data = id,
