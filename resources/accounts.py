@@ -37,7 +37,34 @@ def create_acct():
         status=201
     ), 201
 
-#need to add a get one route here for a single account
+@accounts.route('/<id>/history')
+def acct_hist(id):
+    
+    account = models.Account.get_by_id(id)
+    print('result of select() query', account)
+
+    trans_list = models.Transaction.select().where(models.Transaction.acct_id == account)
+    acct_trans_dicts = [model_to_dict(account) for account in trans_list]
+
+    # for trans_dicts in acct_trans_dicts:
+    #     trans_dicts.pop('acct_id')
+    
+    deps_list = models.Deposit.select().where(models.Deposit.acct_id == account)
+    acct_deps_dicts = [model_to_dict(account) for account in deps_list]
+
+    # for deps_dicts in acct_deps_dicts:
+    #     deps_dicts.pop('acct_id')
+
+    total_dicts = acct_trans_dicts + acct_deps_dicts
+
+    for dicts in total_dicts:
+        dicts.pop('acct_id')
+
+    return jsonify({
+        'data': total_dicts,
+        'msg': f"found {len(total_dicts)} account details.",
+        'status': 200
+    }), 200
 
 @accounts.route('/<id>', methods=['PUT'])
 def update_acct(id):
