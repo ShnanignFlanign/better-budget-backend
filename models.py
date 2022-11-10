@@ -1,8 +1,13 @@
 from peewee import * 
 import datetime 
 from flask_login import UserMixin
+import os
+from playhouse.db_url import connect
 
-DATABASE = SqliteDatabase('budget.sqlite')
+DATABASE = connect(os.environ.get('DATABASE_URL') or 'sqlite:///budget.sqlite')
+# Connect to the database URL defined in the environment, falling
+# back to a local Sqlite database if no database URL is specified.
+
 
 class User(UserMixin, Model):
     username = CharField(unique=True)
