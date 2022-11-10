@@ -6,7 +6,7 @@ from playhouse.shortcuts import model_to_dict
 deposits = Blueprint('deposits', 'deposits')
 
 @deposits.route('/<id>/deposits')
-def trans_index(id):
+def deps_index(id):
     account = models.Account.get_by_id(id)
     print('result of select() query', account)
     deps_list = account.deposits
@@ -22,7 +22,7 @@ def trans_index(id):
     }), 200
 
 @deposits.route('/<id>/deposits', methods=['POST'])
-def create_transaction(id):
+def create_deposit(id):
     payload = request.get_json()
     new_dep = models.Deposit.create(acct_id=id, name=payload['name'], amount=payload['amount'])
 
@@ -41,7 +41,7 @@ def create_transaction(id):
     ), 201
 
 @deposits.route('/<aid>/deposits/<id>', methods=['PUT'])
-def edit_transaction(aid, id):
+def edit_deposit(aid, id):
     payload = request.get_json()
     account = models.Account.get_by_id(aid)
     deposit = models.Deposit.get_by_id(id)
@@ -52,7 +52,7 @@ def edit_transaction(aid, id):
     acct_update.execute()
     query.execute()
 
-    edited_dep = model_to_dict(deposit)
+    edited_dep = model_to_dict(models.Deposit.get_by_id(id))
     edited_dep.pop('acct_id')
     return jsonify(
         data = edited_dep,
@@ -61,7 +61,7 @@ def edit_transaction(aid, id):
     ), 200
 
 @deposits.route('/<aid>/deposits/<id>', methods=['DELETE'])
-def delete_transaction(aid, id):
+def delete_deposit(aid, id):
     query = models.Deposit.delete().where(models.Deposit.id == id)
     query.execute()
     return jsonify(

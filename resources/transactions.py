@@ -52,7 +52,7 @@ def edit_transaction(aid, id):
     acct_update.execute()
     query.execute()
 
-    edited_trans = model_to_dict(transaction)
+    edited_trans = model_to_dict(models.Transaction.get_by_id(id))
     edited_trans.pop('acct_id')
     return jsonify(
         data = edited_trans,
