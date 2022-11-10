@@ -2,6 +2,7 @@ import models
 from flask import Blueprint, request, jsonify
 from flask_login import current_user
 from playhouse.shortcuts import model_to_dict
+from decimal import Decimal
 
 transactions = Blueprint('transactions', 'transactions')
 
@@ -27,7 +28,7 @@ def create_transaction(id):
     new_trans = models.Transaction.create(acct_id=id, name=payload['name'], amount=payload['amount'], category=payload['category'], description=payload['description'])
 
     account = models.Account.get_by_id(id)
-    new_balance = account.balance - payload['amount']
+    new_balance = account.balance - Decimal(payload['amount'])
     update_query = account.update(balance=new_balance)
     update_query.execute()
 
@@ -46,7 +47,7 @@ def edit_transaction(aid, id):
     account = models.Account.get_by_id(aid)
     transaction = models.Transaction.get_by_id(id)
     
-    new_balance = account.balance + (transaction.amount - payload['amount'])
+    new_balance = account.balance + (transaction.amount - Decimal(payload['amount']))
     acct_update = account.update(balance=new_balance)
     query = transaction.update(**payload)
     acct_update.execute()
