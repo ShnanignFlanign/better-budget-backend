@@ -51,11 +51,15 @@ def acct_hist(id):
     for dicts in total_dicts:
         dicts.pop('acct_id')
     
-    sorted_total = sorted(total_dicts, key=lambda d: d['date'])
+    sorted_trans = sorted(acct_trans_dicts, key=lambda d: d['date'])
+    sorted_deps = sorted(acct_deps_dicts, key=lambda d: d['date'])
 
     return jsonify({
-        'data': sorted_total,
-        'msg': f"found {len(sorted_total)} account details.",
+        'data': {
+            'Transactions': sorted_trans,
+            'Deposits': sorted_deps
+        },
+        'msg': f"found {len(sorted_deps) + len(sorted_trans)} account details.",
         'status': 200
     }), 200
 
