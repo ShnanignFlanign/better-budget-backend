@@ -42,9 +42,11 @@ def acct_hist(id):
     account = models.Account.get_by_id(id)
     print('result of select() query', account)
 
-    trans_list = account.transactions
+    # trans_list = account.transactions
+    trans_list = models.Transaction.select().where(models.Transaction.acct_id == id)
     acct_trans_dicts = [model_to_dict(trans) for trans in trans_list] 
-    deps_list = account.deposits
+    # deps_list = account.deposits
+    deps_list = models.Deposit.select().where(models.Deposit.acct_id == id)
     acct_deps_dicts = [model_to_dict(dep) for dep in deps_list]
 
     total_dicts = acct_trans_dicts + acct_deps_dicts
