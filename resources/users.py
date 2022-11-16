@@ -49,7 +49,7 @@ def login():
         if(check_password_hash(user_dict['password'], payload['password'])): 
             del user_dict['password'] 
             login_user(user) 
-            print(user_dict, ' this is user')
+            print(f"'{current_user.username}' is current_user.username in POST login")
             return jsonify(data=user_dict, status={"code": 200, "message": "Success"}) 
         else:
             return jsonify(data={}, status={"code": 401, "message": "Username or Password is incorrect"})
