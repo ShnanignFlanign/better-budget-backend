@@ -1,12 +1,13 @@
 import models 
 from flask import Blueprint, request, jsonify
-from flask_login import current_user
+from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
 from decimal import Decimal
 
 deposits = Blueprint('deposits', 'deposits')
 
 @deposits.route('/<id>/deposits')
+@login_required
 def deps_index(id):
     account = models.Account.get_by_id(id)
     print('result of select() query', account)
@@ -23,6 +24,7 @@ def deps_index(id):
     }), 200
 
 @deposits.route('/<id>/deposits', methods=['POST'])
+@login_required
 def create_deposit(id):
     payload = request.get_json()
     new_dep = models.Deposit.create(acct_id=id, name=payload['name'], amount=payload['amount'])
@@ -42,6 +44,7 @@ def create_deposit(id):
     ), 201
 
 @deposits.route('/<aid>/deposits/<id>', methods=['PUT'])
+@login_required
 def edit_deposit(aid, id):
     payload = request.get_json()
     account = models.Account.get_by_id(aid)
@@ -62,6 +65,7 @@ def edit_deposit(aid, id):
     ), 200
 
 @deposits.route('/<aid>/deposits/<id>', methods=['DELETE'])
+@login_required
 def delete_deposit(aid, id):
     query = models.Deposit.delete().where(models.Deposit.id == id)
     query.execute()

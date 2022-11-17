@@ -1,12 +1,13 @@
 import models 
 from flask import Blueprint, request, jsonify
-from flask_login import current_user
+from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
 from decimal import Decimal
 
 transactions = Blueprint('transactions', 'transactions')
 
 @transactions.route('/<id>/transactions')
+@login_required
 def trans_index(id):
     account = models.Account.get_by_id(id)
     print('result of select() query', account)
@@ -23,6 +24,7 @@ def trans_index(id):
     }), 200
 
 @transactions.route('/<id>/transactions', methods=['POST', 'PUT'])
+@login_required
 def create_transaction(id):
     payload = request.get_json()
     new_trans = models.Transaction.create(acct_id=id, name=payload['name'], amount=payload['amount'], category=payload['category'], description=payload['description'])
@@ -42,6 +44,7 @@ def create_transaction(id):
     ), 201
 
 @transactions.route('/<aid>/transactions/<id>', methods=['PUT'])
+@login_required
 def edit_transaction(aid, id):
     payload = request.get_json()
     account = models.Account.get_by_id(aid)
@@ -62,6 +65,7 @@ def edit_transaction(aid, id):
     ), 200
 
 @transactions.route('/<aid>/transactions/<id>', methods=['DELETE'])
+@login_required
 def delete_transaction(aid, id):
     query = models.Transaction.delete().where(models.Transaction.id == id)
     query.execute()
