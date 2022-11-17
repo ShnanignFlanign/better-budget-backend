@@ -50,7 +50,7 @@ def login():
         if(check_password_hash(user_dict['password'], payload['password'])): 
             del user_dict['password'] 
             session.permanent = True
-            login_user(user, remember=True, duration=timedelta(days=365)) 
+            login_user(user, remember=True, duration=timedelta(days=365), force=True) 
             print(f"{current_user.username} is current_user.username in POST register")
             return jsonify(data=user_dict, status={"code": 200, "message": "Success"}) 
         else:
