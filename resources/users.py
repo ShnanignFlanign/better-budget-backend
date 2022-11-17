@@ -9,7 +9,7 @@ from playhouse.shortcuts import model_to_dict
 
 user = Blueprint('user', 'user')
 
-@user.route('/signup', methods=['POST'])
+@user.route('/signup', methods=["GET","POST"])
 def register():
     payload = request.get_json()
     payload['email'] = payload['email'].lower()
@@ -40,7 +40,7 @@ def register():
             }
         )
     
-@user.route('/login', methods=["POST"])
+@user.route('/login', methods=["GET","POST"])
 def login():
     payload = request.get_json()
     try:
