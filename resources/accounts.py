@@ -6,9 +6,9 @@ from playhouse.shortcuts import model_to_dict
 accounts = Blueprint('accounts', 'accounts')
 
 @accounts.route('/')
-@login_required
+
 def accts_index():
-    
+    print(current_user)
     result = models.Account.select()
     print('result of select() query', result)
 
