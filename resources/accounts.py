@@ -1,11 +1,12 @@
 import models 
 from flask import Blueprint, request, jsonify
-from flask_login import current_user
+from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
 
 accounts = Blueprint('accounts', 'accounts')
 
 @accounts.route('/')
+@login_required
 def accts_index():
     
     result = models.Account.select()
@@ -23,6 +24,7 @@ def accts_index():
     }), 200
 
 @accounts.route('/', methods=['POST'])
+@login_required
 def create_acct():
     payload = request.get_json()
     print(payload)
@@ -38,6 +40,7 @@ def create_acct():
     ), 201
 
 @accounts.route('/<id>/history')
+@login_required
 def acct_hist(id):
     account = models.Account.get_by_id(id)
     print('result of select() query', account)
@@ -66,6 +69,7 @@ def acct_hist(id):
     }), 200
 
 @accounts.route('/<id>', methods=['PUT'])
+@login_required
 def update_acct(id):
     payload = request.get_json()
     query = models.Account.update(**payload).where(models.Account.id == id) 
@@ -77,6 +81,7 @@ def update_acct(id):
     ), 200
 
 @accounts.route('/<id>', methods=['DELETE'])
+@login_required
 def delete_acct(id):
     account = models.Account.get_by_id(id)
     del_deps = models.Deposit.delete().where(models.Deposit.acct_id == id)
