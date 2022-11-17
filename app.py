@@ -22,15 +22,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
 login_manager = LoginManager()
-login_manager.init_app(app)
 
-@login_manager.user_loader
-def load_user(userid):
-    try:
-        print("in load user")
-        return models.User.get(models.User.id == userid)
-    except models.DoesNotExist:
-        return None
 
 CORS(accounts, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(accounts, url_prefix='/portal/accounts')
@@ -43,6 +35,17 @@ app.register_blueprint(deposits, url_prefix='/portal/accounts')
 
 CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
+
+
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(userid):
+    try:
+        print("in load user")
+        return models.User.get(models.User.id == userid)
+    except models.DoesNotExist:
+        return None
 
 @app.before_request # use this decorator to cause a function to run before reqs
 def before_request():
