@@ -39,8 +39,8 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(userid):
+    print("in load user")
     try:
-        print("in load user")
         return models.User.get(models.User.id == userid)
     except models.DoesNotExist:
         return None

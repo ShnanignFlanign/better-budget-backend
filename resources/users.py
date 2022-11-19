@@ -12,7 +12,7 @@ from datetime import timedelta
 user = Blueprint('user', 'user')
 
 @user.route('/signup', methods=["POST"])
-@cross_origin()
+# @cross_origin()
 def register():
     payload = request.get_json()
     payload['email'] = payload['email'].lower()
@@ -44,7 +44,7 @@ def register():
         )
     
 @user.route('/login', methods=["POST"])
-@cross_origin()
+# @cross_origin()
 def login():
     payload = request.get_json()
     try:
@@ -65,8 +65,9 @@ def login():
 
 @user.route('/logout', methods=['GET'])
 @login_required
-@cross_origin()
+# @cross_origin()
 def logout():
+    print(current_user.username)
     logout_user()
     return jsonify(
         data={},

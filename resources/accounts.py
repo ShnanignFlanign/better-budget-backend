@@ -11,7 +11,7 @@ def accts_index():
     print(current_user)
     result = models.Account.select()
     print('result of select() query', result)
-
+    print(f"'{current_user.username}' is current_user.username in acct GET")
     current_user_acct_dicts = [model_to_dict(account) for account in current_user.accounts]
 
     for acct_dict in current_user_acct_dicts:
