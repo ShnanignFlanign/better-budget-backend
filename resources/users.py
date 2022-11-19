@@ -3,6 +3,7 @@ import models
 from flask import request, jsonify, Blueprint, session
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_cors import cross_origin
 from playhouse.shortcuts import model_to_dict
 from datetime import timedelta
 
@@ -41,7 +42,8 @@ def register():
             }
         )
     
-@user.route('/login', methods=["GET","POST"])
+@user.route('/login', methods=["POST"])
+@cross_origin()
 def login():
     payload = request.get_json()
     try:
@@ -49,9 +51,10 @@ def login():
         user_dict = model_to_dict(user) 
         if(check_password_hash(user_dict['password'], payload['password'])): 
             del user_dict['password'] 
-            session.permanent = True
-            login_user(user, remember=True, duration=timedelta(days=365), force=True) 
-            print(f"{current_user.username} is current_user.username in POST register")
+            # session.permanent = True
+            # login_user(user, remember=True, duration=timedelta(days=365), force=True) 
+            login_user(user)
+            print(f"'{current_user.username}' is current_user.username in POST register")
             return jsonify(data=user_dict, status={"code": 200, "message": "Success"}) 
         else:
             return jsonify(data={}, status={"code": 401, "message": "Username or Password is incorrect"})
