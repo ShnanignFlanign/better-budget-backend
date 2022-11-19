@@ -23,6 +23,11 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 login_manager = LoginManager()
 
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='None',
+)
 
 CORS(accounts, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(transactions, origins=['http://localhost:3000'], supports_credentials=True)
