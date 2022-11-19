@@ -11,7 +11,8 @@ from datetime import timedelta
 
 user = Blueprint('user', 'user')
 
-@user.route('/signup', methods=["GET","POST"])
+@user.route('/signup', methods=["POST"])
+@cross_origin()
 def register():
     payload = request.get_json()
     payload['email'] = payload['email'].lower()
@@ -64,6 +65,7 @@ def login():
 
 @user.route('/logout', methods=['GET'])
 @login_required
+@cross_origin()
 def logout():
 
     logout_user()
