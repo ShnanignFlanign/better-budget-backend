@@ -55,7 +55,6 @@ def before_request():
     @after_this_request # use this decorator to Executes a function after this request
     def after_request(response):
         """Close the db connetion after each request"""
-        header = response.headers
         print("you should see this after each request") # optional -- to illustrate that this code runs after each request
         models.DATABASE.close()
         return response # go ahead and send response back to client
