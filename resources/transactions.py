@@ -23,7 +23,7 @@ def trans_index(id):
         'status': 200
     }), 200
 
-@transactions.route('/<id>/transactions', methods=['POST', 'PUT'])
+@transactions.route('/<id>/transactions', methods=['POST'])
 @login_required
 def create_transaction(id):
     payload = request.get_json()
@@ -48,11 +48,11 @@ def create_transaction(id):
 def edit_transaction(aid, id):
     payload = request.get_json()
     account = models.Account.get_by_id(aid)
-    transaction = models.Transaction.get_by_id(id)
+    foundTrans = models.Transaction.get_by_id(id)
     
-    new_balance = account.balance + (transaction.amount - Decimal(payload['amount']))
+    new_balance = account.balance + (foundTrans.amount - Decimal(payload['amount']))
     acct_update = account.update(balance=new_balance)
-    query = transaction.update(**payload)
+    query = foundTrans.update(**payload)
     acct_update.execute()
     query.execute()
 
