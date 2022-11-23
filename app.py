@@ -23,6 +23,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 login_manager = LoginManager()
 
+#comment out config for local dev
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,

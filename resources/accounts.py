@@ -48,23 +48,27 @@ def acct_hist(id):
     # trans_list = account.transactions
     trans_list = models.Transaction.select().where(models.Transaction.acct_id == id)
     acct_trans_dicts = [model_to_dict(trans) for trans in trans_list] 
-    # deps_list = account.deposits
+    for trans in acct_trans_dicts:
+        trans['type'] = 'transaction'
+
     deps_list = models.Deposit.select().where(models.Deposit.acct_id == id)
     acct_deps_dicts = [model_to_dict(dep) for dep in deps_list]
+    for deps in acct_deps_dicts:
+        deps['type'] = 'deposit'
 
     total_dicts = acct_trans_dicts + acct_deps_dicts
     for dicts in total_dicts:
         dicts.pop('acct_id')
-    
-    sorted_trans = sorted(acct_trans_dicts, key=lambda d: d['date'])
-    sorted_deps = sorted(acct_deps_dicts, key=lambda d: d['date'])
+    #change this to return one sorted list. Once changed, change fetch call on front end.
+    sorted_total = sorted(total_dicts, key=lambda d: d['date'])
+    # sorted_trans = sorted(acct_trans_dicts, key=lambda d: d['date'])
+    # sorted_deps = sorted(acct_deps_dicts, key=lambda d: d['date'])
 
     return jsonify({
         'data': {
-            'Transactions': sorted_trans,
-            'Deposits': sorted_deps
+            'History': sorted_total
         },
-        'msg': f"found {len(sorted_deps) + len(sorted_trans)} account details.",
+        'msg': f"found {len(sorted_total)} account details.",
         'status': 200
     }), 200
 
