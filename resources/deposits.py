@@ -54,7 +54,7 @@ def edit_deposit(aid, id):
 
     new_balance = account.balance - (deposit.amount - Decimal(payload['amount']))
     acct_update = models.Account.update(balance=new_balance).where(models.Account.id == aid)
-    query = deposit.update(**payload)
+    query = models.Deposit.update(**payload).where(models.Deposit.id == id)
     acct_update.execute()
     query.execute()
 
