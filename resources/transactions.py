@@ -52,7 +52,7 @@ def edit_transaction(aid, id):
     
     new_balance = account.balance + (foundTrans.amount - Decimal(payload['amount']))
     acct_update = models.Account.update(balance=new_balance).where(models.Account.id == aid)
-    query = foundTrans.update(**payload)
+    query = models.Transaction.update(**payload).where(models.Transaction.id == id)
     acct_update.execute()
     query.execute()
 
