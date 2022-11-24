@@ -16,9 +16,11 @@ def deps_index(id):
 
     for deps_dicts in acct_deps_dicts:
         deps_dicts.pop('acct_id')
+    
+    sorted_total = sorted(acct_deps_dicts, key=lambda d: d['date'])
 
     return jsonify({
-        'data': acct_deps_dicts,
+        'data': sorted_total,
         'msg': f"found {len(acct_deps_dicts)} deposits",
         'status': 200
     }), 200

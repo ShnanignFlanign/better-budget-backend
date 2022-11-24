@@ -16,9 +16,11 @@ def trans_index(id):
 
     for trans_dicts in acct_trans_dicts:
         trans_dicts.pop('acct_id')
+    
+    sorted_total = sorted(acct_trans_dicts, key=lambda d: d['date'])
 
     return jsonify({
-        'data': acct_trans_dicts,
+        'data': sorted_total,
         'msg': f"found {len(acct_trans_dicts)} transactions",
         'status': 200
     }), 200
@@ -52,7 +54,7 @@ def edit_transaction(aid, id):
     
     new_balance = account.balance + (foundTrans.amount - Decimal(payload['amount']))
     acct_update = models.Account.update(balance=new_balance).where(models.Account.id == aid)
-    query = models.Transaction.update(name=payload['name'], amount=payload['amount'], category=payload['category'], description=payload['description']).where(models.Transaction.id == id)
+    query = models.Transaction.update(**payload).where(models.Transaction.id == id)
     acct_update.execute()
     query.execute()
 
