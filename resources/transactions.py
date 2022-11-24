@@ -33,7 +33,7 @@ def create_transaction(id):
 
     account = models.Account.get_by_id(id)
     new_balance = account.balance - Decimal(payload['amount'])
-    update_query = models.Account.update(balance=new_balance).where(models.account.id == id)
+    update_query = models.Account.update(balance=new_balance).where(models.Account.id == id)
     update_query.execute()
 
     trans_dict = model_to_dict(new_trans)
