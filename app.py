@@ -30,10 +30,10 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='None',
 )
 
-CORS(accounts, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(transactions, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(deposits, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(accounts, origins=['http://localhost:3000', 'https://better-budget.herokuapp.com/'], supports_credentials=True)
+CORS(transactions, origins=['http://localhost:3000', 'https://better-budget.herokuapp.com/'], supports_credentials=True)
+CORS(deposits, origins=['http://localhost:3000', 'https://better-budget.herokuapp.com/'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000', 'https://better-budget.herokuapp.com/'], supports_credentials=True)
 
 app.register_blueprint(accounts, url_prefix='/portal/accounts')
 app.register_blueprint(transactions, url_prefix='/portal/accounts')
