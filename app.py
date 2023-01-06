@@ -24,11 +24,11 @@ app.secret_key = os.getenv("SECRET_KEY")
 login_manager = LoginManager()
 
 #comment out config for local dev
-app.config.update(
-    SESSION_COOKIE_SECURE=True,
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='None',
-)
+# app.config.update(
+#     SESSION_COOKIE_SECURE=True,
+#     SESSION_COOKIE_HTTPONLY=True,
+#     SESSION_COOKIE_SAMESITE='None',
+# )
 
 CORS(accounts, origins=['https://better-budget.herokuapp.com', 'http://better-budget.herokuapp.com', 'https://localhost:3000', 'http://localhost:3000'], supports_credentials=True)
 CORS(transactions, origins=['https://better-budget.herokuapp.com', 'http://better-budget.herokuapp.com', 'https://localhost:3000', 'http://localhost:3000'], supports_credentials=True)
